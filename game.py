@@ -1,33 +1,33 @@
 import random
 
-def pick_random_word(word_list):
-    return random.choice(word_list)
+def randomWord(wordList):
+    return random.choice(wordList)
 
-def update_display_word(secret_word, guessed_letters):
+def updateDisplayWord(word, guessed):
     display = ""
-    for letter in secret_word:
-        if letter in guessed_letters:
+    for letter in word:
+        if letter in guessed:
             display += letter + " "
         else:
             display += "_ "
     return display.strip()
 
-def play_hangman():
-    word_list = ["serendipitiously", "jazz", "xylophone", "zygote", "jubilant"]
+def playHangman():
+    wordList = ["serendipitiously", "exacerbate", "jazz", "xylophone", "zygote", "jubilant", "denouement", "penultimate", "hippopotomonstrosesquippedaliophobia", "zeal"]
 
-    secret_word = pick_random_word(word_list)
+    word = randomWord(wordList)
 
-    guessed_letters = set()
-    attempts_remaining = 6
+    guessed = set()
+    livesRemaining = 6
     guesses = 0
 
     print("Welcome to Hangman!")
 
-    while attempts_remaining > 0:
-        display_word = update_display_word(secret_word, guessed_letters)
-        print("\nWord:", display_word)
-        print("Attempts remaining:", attempts_remaining)
-        print("Guessed letters:", ", ".join(sorted(guessed_letters)))
+    while livesRemaining > 0:
+        displayWord = updateDisplayWord(word, guessed)
+        print("\nWord:", displayWord)
+        print("Attempts Remaining:", livesRemaining)
+        print("Guessed Letters:", ", ".join(sorted(guessed)))
 
         guess = input("Enter a letter: ").lower()
 
@@ -35,24 +35,23 @@ def play_hangman():
             print("Invalid input. Please enter a single letter.")
             continue
 
-        if guess in guessed_letters:
+        if guess in guessed:
             print("You already guessed that letter.")
             continue
 
-        guessed_letters.add(guess)
+        guessed.add(guess)
         guesses += 1
 
-        if guess in secret_word:
+        if guess in word:
             print("Good guess!")
-            if all(letter in guessed_letters for letter in secret_word):
-                print("\nCongratulations! You guessed the word '" + secret_word + "' in", guesses, "guesses!")
+            if all(letter in guessed for letter in word):
+                print("\nCongratulations! You guessed the word '" + word + "' in", guesses, "guesses!")
                 break
         else:
-            print("Wrong guess.")
-            attempts_remaining -= 1
+            print("Sorry, incorrect guess!")
+            livesRemaining -= 1
 
-    if attempts_remaining == 0:
-        print("\nGame over! The word was:", secret_word)
+    if livesRemaining == 0:
+        print("\nGame over! The word was:", word)
 
-if __name__ == "__main__":
-    play_hangman()
+playHangman()
